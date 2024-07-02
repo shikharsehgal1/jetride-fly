@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
     cloudImg.src = 'cloud.png';
     birdImg.src = 'bird.png';
 
+    rocketImg.onload = () => { console.log('Rocket image loaded'); };
+    cloudImg.onload = () => { console.log('Cloud image loaded'); };
+    birdImg.onload = () => { console.log('Bird image loaded'); };
+
     function initializeVariables() {
         xRocket = gameCanvas.width / 2;
         yRocket = gameCanvas.height / 2;
