@@ -4,25 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameCanvas = document.getElementById("gameCanvas");
     const ctx = gameCanvas.getContext("2d");
 
-    gameCanvas.width = window.innerWidth;
-    gameCanvas.height = window.innerHeight;
+    let xRocket, yRocket, rocketWidth, rocketHeight, rocketSpeed;
+    let obstacles, obstacleSpeed, gameRunning, score;
+    let moveLeft, moveRight, moveUp, moveDown;
 
-    let xRocket = gameCanvas.width / 2;
-    let yRocket = gameCanvas.height / 2;
-    let rocketWidth = 50;
-    let rocketHeight = 100;
-    let rocketSpeed = 5; // Reduced speed for smoother movement
-    let obstacles = [];
-    let obstacleSpeed = 5; // Increased speed for more challenge
-    let gameRunning = false;
-    let score = 0;
-
-    let moveLeft = false;
-    let moveRight = false;
-    let moveUp = false;
-    let moveDown = false;
-
-    // Load images
     const rocketImg = new Image();
     const cloudImg = new Image();
     const birdImg = new Image();
@@ -31,14 +16,30 @@ document.addEventListener("DOMContentLoaded", () => {
     cloudImg.src = 'cloud.png';
     birdImg.src = 'bird.png';
 
+    function initializeVariables() {
+        xRocket = gameCanvas.width / 2;
+        yRocket = gameCanvas.height / 2;
+        rocketWidth = 50;
+        rocketHeight = 100;
+        rocketSpeed = 5; // Adjusted speed for smoother movement
+        obstacles = [];
+        obstacleSpeed = 5; // Increased speed for more challenge
+        gameRunning = false;
+        score = 0;
+
+        moveLeft = false;
+        moveRight = false;
+        moveUp = false;
+        moveDown = false;
+    }
+
     startButton.addEventListener("click", startGame);
 
     function startGame() {
         introScreen.style.display = "none";
         gameCanvas.style.display = "block";
         gameRunning = true;
-        obstacles = [];
-        score = 0;
+        initializeVariables();
         createObstacle();
         gameLoop();
     }
@@ -158,6 +159,14 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.fillText("You Crashed! Reload the page to try again.", gameCanvas.width / 2 - 200, gameCanvas.height / 2);
     }
 
+    function resizeCanvas() {
+        gameCanvas.width = window.innerWidth;
+        gameCanvas.height = window.innerHeight;
+        initializeVariables();
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+
     window.addEventListener("keydown", event => {
         if (!gameRunning) return;
 
@@ -191,4 +200,36 @@ document.addEventListener("DOMContentLoaded", () => {
             moveDown = false;
         }
     });
+
+    gameCanvas.addEventListener("touchstart", handleTouchStart);
+    gameCanvas.addEventListener("touchmove", handleTouchMove);
+    gameCanvas.addEventListener("touchend", handleTouchEnd);
+
+    function handleTouchStart(event) {
+        const touch = event.touches[0];
+        handleTouch(touch.clientX, touch.clientY);
+    }
+
+    function handleTouchMove(event) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        handleTouch(touch.clientX, touch.clientY);
+    }
+
+    function handleTouch(touchX, touchY) {
+        const threshold = 30; // Sensitivity threshold for touch movement
+        moveLeft = touchX < xRocket - threshold;
+        moveRight = touchX > xRocket + threshold;
+        moveUp = touchY < yRocket - threshold;
+        moveDown = touchY > yRocket + threshold;
+    }
+
+    function handleTouchEnd() {
+        moveLeft = false;
+        moveRight = false;
+        moveUp = false;
+        moveDown = false;
+    }
+
+    resizeCanvas(); // Initialize canvas size
 });
