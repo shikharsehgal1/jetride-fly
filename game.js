@@ -25,9 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
         yRocket = gameCanvas.height / 2;
         rocketWidth = 50;
         rocketHeight = 100;
-        rocketSpeed = 5; // Adjusted speed for smoother movement
+        rocketSpeed = 5;
         obstacles = [];
-        obstacleSpeed = 5; // Increased speed for more challenge
+        obstacleSpeed = 5;
         gameRunning = false;
         score = 0;
 
@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let width, height, x, y, type, img, direction;
 
         if (Math.random() < 0.5) {
-            // Cloud from above
             width = Math.random() * 50 + 50;
             height = width / 2;
             x = Math.random() * (gameCanvas.width - width);
@@ -65,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
             img = cloudImg;
             direction = 0;
         } else {
-            // Bird from either side
             width = Math.random() * 30 + 30;
             height = width / 1.5;
             y = Math.random() * (gameCanvas.height - height);
@@ -100,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         obstacles = obstacles.filter(obstacle => obstacle.y < gameCanvas.height && obstacle.x < gameCanvas.width && obstacle.x + obstacle.width > 0);
 
-        if (Math.random() < 0.05) { // Increased frequency of obstacles
+        if (Math.random() < 0.05) {
             createObstacle();
         }
     }
@@ -128,7 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-        // Update rocket position
         if (moveLeft && xRocket - rocketWidth / 2 > 0) {
             xRocket -= rocketSpeed;
         }
@@ -221,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function handleTouch(touchX, touchY) {
-        const threshold = 30; // Sensitivity threshold for touch movement
+        const threshold = 30;
         moveLeft = touchX < xRocket - threshold;
         moveRight = touchX > xRocket + threshold;
         moveUp = touchY < yRocket - threshold;
@@ -235,5 +232,5 @@ document.addEventListener("DOMContentLoaded", () => {
         moveDown = false;
     }
 
-    resizeCanvas(); // Initialize canvas size
+    resizeCanvas();
 });
