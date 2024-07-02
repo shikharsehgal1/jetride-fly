@@ -17,6 +17,8 @@ body {
 #gameCanvas {
     display: none;
     background: linear-gradient(to bottom, #87cefa, #000);
+    width: 100vw;
+    height: 100vh;
 }
 
 button {
